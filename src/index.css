@@ -85,24 +85,6 @@
     min-width: 44px;
     min-height: 44px;
   }
-  
-  /* Responsive map container */
-  .map-container {
-    /* Mobile: full viewport minus header and navigation */
-    height: calc(100vh - 140px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  }
-  
-  @media (min-width: 768px) {
-    .map-container {
-      height: calc(100vh - 160px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .map-container {
-      height: calc(100vh - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    }
-  }
 }
 
 @layer utilities {
@@ -311,23 +293,4 @@ button:active::before {
 /* Alternative: Hide entire zoom control group */
 .mapboxgl-ctrl-group:has(.mapboxgl-ctrl-zoom-in) {
   display: none !important;
-}
-
-/* Responsive map sizing */
-@media (max-width: 640px) {
-  .map-container {
-    min-height: 400px;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-  .map-container {
-    min-height: 500px;
-  }
-}
-
-@media (min-width: 1025px) {
-  .map-container {
-    min-height: 600px;
-  }
 }
