@@ -519,72 +519,74 @@ const FullScreenMap: React.FC<FullScreenMapProps> = ({ onClose, setIsCargoDetail
         </div>
       </div>
 
-      {/* Верхняя панель управления */}
-      <div className="absolute top-4 left-4 right-4 z-20">
-        <div className="bg-gray-800/90 backdrop-blur-md border border-gray-700 rounded-2xl p-4">
-          <div className="flex items-center gap-4">
-            <button onClick={onClose} className="bg-gray-700 hover:bg-gray-600 p-2 rounded-xl transition-all duration-200">
-              <X className="w-5 h-5 text-gray-300" />
-            </button>
+      {/* Верхняя панель управления - скрывается когда открыта панель деталей */}
+      {!showDetailPanel && !showNearbyCargosPanel && (
+        <div className="absolute top-4 left-4 right-4 z-20">
+          <div className="bg-gray-800/90 backdrop-blur-md border border-gray-700 rounded-2xl p-4">
+            <div className="flex items-center gap-4">
+              <button onClick={onClose} className="bg-gray-700 hover:bg-gray-600 p-2 rounded-xl transition-all duration-200">
+                <X className="w-5 h-5 text-gray-300" />
+              </button>
 
-            <div className="flex-1">
-              <h1 className="text-xl font-semibold text-white">Карта грузов</h1>
-              <p className="text-sm text-gray-400">Используйте фильтры для поиска подходящих грузов</p>
+              <div className="flex-1">
+                <h1 className="text-xl font-semibold text-white">Карта грузов</h1>
+                <p className="text-sm text-gray-400">Используйте фильтры для поиска подходящих грузов</p>
+              </div>
+
+              {/* Геолокация / «ко мне» */}
+              <button
+                onClick={getUserGpsLocation}
+                disabled={isLocating}
+                className={`p-3 rounded-xl transition-all duration-200 ${
+                  !geolocationSupported 
+                    ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                    : geolocationError 
+                      ? 'bg-red-600 hover:bg-red-500' 
+                      : 'bg-gray-700 hover:bg-gray-600'
+                }`}
+                title={userLocation ? 'Показать мою позицию' : 'Определить мою позицию'}
+              >
+                {isLocating ? (
+                  <Loader className="w-5 h-5 text-cyan-400 animate-spin" />
+                ) : geolocationError ? (
+                  <NavigationIcon className="w-5 h-5 text-red-300" />
+                ) : (
+                  <NavigationIcon className="w-5 h-5 text-cyan-400" />
+                )}
+              </button>
+
+              {/* Фильтры */}
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className={`relative bg-gray-700 hover:bg-gray-600 p-3 rounded-xl transition-all duration-200 ${
+                  activeFiltersCount > 0 ? 'ring-2 ring-cyan-500' : ''
+                }`}
+              >
+                <Filter className="w-5 h-5 text-gray-300" />
+                {activeFiltersCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-cyan-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Настройки */}
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className={`bg-gray-700 hover:bg-gray-600 p-3 rounded-xl transition-all duration-200 ${
+                  showSettings ? 'ring-2 ring-purple-500' : ''
+                }`}
+                title="Настройки радиуса поиска"
+              >
+                <SlidersHorizontal className="w-5 h-5 text-gray-300" />
+              </button>
             </div>
-
-            {/* Геолокация / «ко мне» */}
-            <button
-              onClick={getUserGpsLocation}
-              disabled={isLocating}
-              className={`p-3 rounded-xl transition-all duration-200 ${
-                !geolocationSupported 
-                  ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                  : geolocationError 
-                    ? 'bg-red-600 hover:bg-red-500' 
-                    : 'bg-gray-700 hover:bg-gray-600'
-              }`}
-              title={userLocation ? 'Показать мою позицию' : 'Определить мою позицию'}
-            >
-              {isLocating ? (
-                <Loader className="w-5 h-5 text-cyan-400 animate-spin" />
-              ) : geolocationError ? (
-                <NavigationIcon className="w-5 h-5 text-red-300" />
-              ) : (
-                <NavigationIcon className="w-5 h-5 text-cyan-400" />
-              )}
-            </button>
-
-            {/* Фильтры */}
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`relative bg-gray-700 hover:bg-gray-600 p-3 rounded-xl transition-all duration-200 ${
-                activeFiltersCount > 0 ? 'ring-2 ring-cyan-500' : ''
-              }`}
-            >
-              <Filter className="w-5 h-5 text-gray-300" />
-              {activeFiltersCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-cyan-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
-
-            {/* Настройки */}
-            <button
-              onClick={() => setShowSettings(!showSettings)}
-              className={`bg-gray-700 hover:bg-gray-600 p-3 rounded-xl transition-all duration-200 ${
-                showSettings ? 'ring-2 ring-purple-500' : ''
-              }`}
-              title="Настройки радиуса поиска"
-            >
-              <SlidersHorizontal className="w-5 h-5 text-gray-300" />
-            </button>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Панель фильтров */}
-      {showFilters && (
+      {showFilters && !showDetailPanel && !showNearbyCargosPanel && (
         <div className="absolute top-24 left-4 w-80 max-h-[calc(100vh-120px)] z-20 bg-gray-800/95 backdrop-blur-md border border-gray-700 rounded-2xl overflow-hidden">
           <div className="p-4 border-b border-gray-700">
             <div className="flex items-center justify-between">
@@ -807,7 +809,7 @@ const FullScreenMap: React.FC<FullScreenMapProps> = ({ onClose, setIsCargoDetail
       )}
 
       {/* Панель настроек (дублирую контролы радиусов, если тебе удобнее там) */}
-      {showSettings && (
+      {showSettings && !showDetailPanel && !showNearbyCargosPanel && (
         <div className="absolute top-24 right-4 w-80 z-20 bg-gray-800/95 backdrop-blur-md border border-gray-700 rounded-2xl p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-white">Настройки радиуса поиска</h3>
@@ -920,23 +922,25 @@ const FullScreenMap: React.FC<FullScreenMapProps> = ({ onClose, setIsCargoDetail
       )}
 
       {/* Счётчик результатов */}
-      <div className="absolute bottom-4 left-4 z-20">
-        <div className="bg-gray-800/90 backdrop-blur-md border border-gray-700 rounded-xl px-4 py-2">
-          <div className="flex items-center gap-2">
-            <Package className="w-4 h-4 text-cyan-400" />
-            <span className="text-sm text-white">
-              {isLoadingCargos ? (
-                <span className="flex items-center gap-2">
-                  <Loader className="w-3 h-3 animate-spin" />
-                  Загрузка...
-                </span>
-              ) : (
-                `${filteredCargos.length} из ${cargos.length} грузов`
-              )}
-            </span>
+      {!showDetailPanel && !showNearbyCargosPanel && (
+        <div className="absolute bottom-4 left-4 z-20">
+          <div className="bg-gray-800/90 backdrop-blur-md border border-gray-700 rounded-xl px-4 py-2">
+            <div className="flex items-center gap-2">
+              <Package className="w-4 h-4 text-cyan-400" />
+              <span className="text-sm text-white">
+                {isLoadingCargos ? (
+                  <span className="flex items-center gap-2">
+                    <Loader className="w-3 h-3 animate-spin" />
+                    Загрузка...
+                  </span>
+                ) : (
+                  `${filteredCargos.length} из ${cargos.length} грузов`
+                )}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Панель деталей */}
       <CargoDetailPanel cargo={selectedCargo} isOpen={showDetailPanel} onClose={handleCloseDetailPanel} />
