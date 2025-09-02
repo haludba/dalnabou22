@@ -126,32 +126,47 @@ const CargoActionPanel: React.FC<CargoActionPanelProps> = ({
                   />
                 </div>
 
-                        onClick={() => setShowMediaGallery(!showMediaGallery)}
-                        className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all duration-200 ${
-                          showMediaGallery 
-                            ? 'bg-purple-500 text-white' 
-                            : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                        }`}
-                      >
-                        <Image className="w-4 h-4" />
-                        <span className="text-sm font-medium">Медиафайлы</span>
-                      </button>
-                    )}
-                    
-                    {orderData.parking && (
-                      <button
-                        onClick={() => setShowParkingInfo(!showParkingInfo)}
-                        className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all duration-200 ${
-                          showParkingInfo 
-                            ? 'bg-orange-500 text-white' 
-                            : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                        }`}
-                      >
-                        <MapPin className="w-4 h-4" />
-                        <span className="text-sm font-medium">Стоянка</span>
-                      </button>
-                    )}
-                  </div>
+                {/* Action Buttons Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <button
+                    onClick={() => setShowLoadingMap(!showLoadingMap)}
+                    className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all duration-200 ${
+                      showLoadingMap 
+                        ? 'bg-cyan-500 text-white' 
+                        : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    }`}
+                  >
+                    <MapPin className="w-4 h-4" />
+                    <span className="text-sm font-medium">Место погрузки</span>
+                  </button>
+
+                  {orderData.media.length > 0 && (
+                    <button
+                      onClick={() => setShowMediaGallery(!showMediaGallery)}
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all duration-200 ${
+                        showMediaGallery 
+                          ? 'bg-purple-500 text-white' 
+                          : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                      }`}
+                    >
+                      <Image className="w-4 h-4" />
+                      <span className="text-sm font-medium">Медиафайлы</span>
+                    </button>
+                  )}
+                  
+                  {orderData.parking && (
+                    <button
+                      onClick={() => setShowParkingInfo(!showParkingInfo)}
+                      className={`flex items-center justify-center gap-2 p-3 rounded-lg transition-all duration-200 ${
+                        showParkingInfo 
+                          ? 'bg-orange-500 text-white' 
+                          : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                      }`}
+                    >
+                      <MapPin className="w-4 h-4" />
+                      <span className="text-sm font-medium">Стоянка</span>
+                    </button>
+                  )}
                 </div>
 
                 {/* Условное отображение дополнительных секций */}
@@ -181,70 +196,6 @@ const CargoActionPanel: React.FC<CargoActionPanelProps> = ({
                       </div>
                       <p className="text-gray-300 text-sm">{orderData.parking.note}</p>
                     </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              // WAITING STATUS: Waiting Info + Parking
-              <div className="space-y-6 bg-red-500 p-4 rounded-xl">
-                <h1 className="text-white text-2xl font-bold">WAITING SCENARIO TEST - VISIBLE!</h1>
-                
-                {/* Waiting Info Block - будет создан в следующих шагах */}
-                <div className="bg-orange-500/20 border border-orange-500/30 rounded-xl p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Clock className="w-6 h-6 text-orange-400" />
-                    <div>
-                      <h3 className="text-orange-400 font-semibold text-lg">Груз ещё не готов</h3>
-                      <p className="text-gray-300 text-sm">{orderData.commentFromShipper}</p>
-                    </div>
-                  </div>
-                  
-                  {/* Queue Information */}
-                  <div className="bg-gray-700/50 rounded-lg p-4">
-                    <h4 className="text-white font-medium mb-3">Информация об очереди</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                      <div>
-                        <div className="text-2xl font-bold text-cyan-400">{orderData.queue.position}</div>
-                        <div className="text-xs text-gray-400">Ваша позиция</div>
-                      </div>
-                      <div>
-                        <div className="text-2xl font-bold text-purple-400">{orderData.queue.total}</div>
-                        <div className="text-xs text-gray-400">Всего в очереди</div>
-                      </div>
-                      <div>
-                        <div className="text-2xl font-bold text-green-400">
-                          {waitingTimeHours > 0 ? `${waitingTimeHours}ч ${remainingMinutes}м` : `${remainingMinutes}м`}
-                        </div>
-                        <div className="text-xs text-gray-400">Примерное ожидание</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Parking/Waiting Area для waiting статуса */}
-                {orderData.parking && (
-                  <div className="bg-gray-700/50 rounded-xl p-4">
-                    <LocationMap
-                      coords={orderData.parking.coords}
-                      title={orderData.parking.title || 'Место ожидания'}
-                      address={orderData.parking.note}
-                      markerColor="#8b5cf6"
-                      className="h-48"
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default CargoActionPanel;
-                    </div>
-                    <p className="text-gray-300 text-sm">{orderData.parking.note}</p>
                   </div>
                 )}
               </div>
