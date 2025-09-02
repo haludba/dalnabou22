@@ -28,6 +28,10 @@
 */
 
 @layer base {
+  :root {
+    --navigation-height: calc(80px + env(safe-area-inset-bottom));
+  }
+  
   * {
     @apply border-gray-700;
   }
@@ -70,7 +74,7 @@
   
   /* Navigation panel specific styles */
   .navigation-panel {
-    height: 80px;
+    height: var(--navigation-height);
     padding-bottom: env(safe-area-inset-bottom);
   }
   
@@ -191,7 +195,8 @@ button:active::before {
 /* Map container animations */
 /* Enhanced map container styles for better visibility */
 .map-container {
-  width: 100% !important;
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
   border-radius: 0;

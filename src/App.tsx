@@ -80,8 +80,10 @@ function App() {
       {!isModalOpen && !isCargoDetailPanelOpen && !isNearbyCargosPanelOpen && <Header />}
       
       <main className="flex flex-col flex-grow">
+        {/* Main content area with padding for fixed navigation */}
+        <div className="flex flex-col flex-grow pb-[var(--navigation-height)]">
         {/* Tab Content */}
-        <div className="transition-all duration-300 ease-in-out flex flex-col flex-grow">
+          <div className="transition-all duration-300 ease-in-out flex flex-col flex-grow">
           {activeTab === 'truckers' && (
             <div className="container mx-auto px-4 py-4 flex-grow">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -97,13 +99,16 @@ function App() {
           )}
 
           {activeTab === 'map' && (
-            <MapView 
-              onCargoClick={handleCargoClick} 
-              setIsCargoDetailPanelOpen={setIsCargoDetailPanelOpen}
-              setIsNearbyCargosPanelOpen={setIsNearbyCargosPanelOpen}
-              onToggleFullScreen={() => setShowFullScreenMap(true)}
-            />
+            <div className="flex-grow flex flex-col h-full">
+              <MapView 
+                onCargoClick={handleCargoClick} 
+                setIsCargoDetailPanelOpen={setIsCargoDetailPanelOpen}
+                setIsNearbyCargosPanelOpen={setIsNearbyCargosPanelOpen}
+                onToggleFullScreen={() => setShowFullScreenMap(true)}
+              />
+            </div>
           )}
+          </div>
         </div>
       </main>
 
