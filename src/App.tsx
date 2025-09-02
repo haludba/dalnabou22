@@ -79,30 +79,30 @@ function App() {
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       {!isModalOpen && !isCargoDetailPanelOpen && !isNearbyCargosPanelOpen && <Header />}
       
-      <main className="container mx-auto px-4 py-4 flex-grow main-content">
+      <main className="flex flex-col flex-grow">
         {/* Tab Content */}
-        <div className="transition-all duration-300 ease-in-out flex-grow">
+        <div className="transition-all duration-300 ease-in-out flex flex-col flex-grow">
           {activeTab === 'truckers' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {truckerData.map((trucker) => (
-                <TruckerCard
-                  key={trucker.id}
-                  trucker={trucker}
-                  onClick={() => handleItemClick(trucker)}
-                />
-              ))}
+            <div className="container mx-auto px-4 py-4 flex-grow">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {truckerData.map((trucker) => (
+                  <TruckerCard
+                    key={trucker.id}
+                    trucker={trucker}
+                    onClick={() => handleItemClick(trucker)}
+                  />
+                ))}
+              </div>
             </div>
           )}
 
           {activeTab === 'map' && (
-            <div className="flex flex-col flex-grow">
-              <MapView 
-                onCargoClick={handleCargoClick} 
-                setIsCargoDetailPanelOpen={setIsCargoDetailPanelOpen}
-                setIsNearbyCargosPanelOpen={setIsNearbyCargosPanelOpen}
-                onToggleFullScreen={() => setShowFullScreenMap(true)}
-              />
-            </div>
+            <MapView 
+              onCargoClick={handleCargoClick} 
+              setIsCargoDetailPanelOpen={setIsCargoDetailPanelOpen}
+              setIsNearbyCargosPanelOpen={setIsNearbyCargosPanelOpen}
+              onToggleFullScreen={() => setShowFullScreenMap(true)}
+            />
           )}
         </div>
       </main>

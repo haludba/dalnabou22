@@ -47,12 +47,6 @@
   }
   
   /* Ensure content doesn't get hidden behind fixed navigation */
-  .main-content {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom));
-    /* Add responsive top padding for better mobile experience */
-    padding-top: 0.5rem;
-  }
-  
   /* Responsive modal/panel heights */
   .modal-content,
   .panel-content {
