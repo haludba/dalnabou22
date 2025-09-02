@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { Copy, Check } from 'lucide-react';
 
 interface QRCodeViewProps {
@@ -44,7 +44,7 @@ export const QRCodeView: React.FC<QRCodeViewProps> = ({
         </h3>
         
         <div className="bg-white p-4 rounded-lg border-2 border-gray-200">
-          <QRCode
+          <QRCodeCanvas
             value={qrValue}
             size={160}
             level="M"
