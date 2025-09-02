@@ -112,7 +112,7 @@ const MapView: React.FC<MapViewProps> = ({ onCargoClick, setIsCargoDetailPanelOp
   });
 
   // Позиционирование тултипа при движении карты
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!isMapLoaded || !hoveredCargo) return;
 
     const map = mapboxService.getMap();
@@ -140,7 +140,7 @@ const MapView: React.FC<MapViewProps> = ({ onCargoClick, setIsCargoDetailPanelOp
     };
   }, [isMapLoaded, hoveredCargo]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const initializeMap = async () => {
       try {
         setIsLoadingMap(true);
@@ -159,6 +159,14 @@ const MapView: React.FC<MapViewProps> = ({ onCargoClick, setIsCargoDetailPanelOp
           console.log('🎯 Setting up cargo layers with click handler');
           mapboxService.setupCargoLayers(handleCargoClick, () => {
             console.log('🗺️ Map is fully loaded and ready');
+            // Ensure map is properly sized after all layers are ready
+            const map = mapboxService.getMap();
+            if (map) {
+              setTimeout(() => {
+                map.resize();
+                console.log('✅ Map resized after layer setup');
+              }, 100);
+            }
             // Now that the map is ready, we can safely load cargos and get geolocation
             loadCargos();
             getUserGpsLocation();
@@ -167,11 +175,6 @@ const MapView: React.FC<MapViewProps> = ({ onCargoClick, setIsCargoDetailPanelOp
           setIsMapLoaded(true);
           console.log('✅ Map loaded successfully');
 
-          // Подстраховка: resize после загрузки
-          setTimeout(() => {
-            const map = mapboxService.getMap();
-            if (map) map.resize();
-          }, 100);
         }
       } catch (error) {
         console.error('Failed to initialize Mapbox:', error);
