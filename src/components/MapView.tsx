@@ -825,9 +825,6 @@ const MapView: React.FC<MapViewProps> = ({ onCargoClick, setIsCargoDetailPanelOp
       <div
         ref={mapContainerRef}
         className="relative transition-all duration-500 overflow-hidden flex-grow min-h-0"
-        style={{
-          height: 'calc(100vh - 200px - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
-        }}
       >
         {isLoadingMap && (
           <div className="absolute inset-0 bg-gray-800 flex items-center justify-center animate-in z-20">
