@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, ArrowLeft, Package, Clock, MapPin, Image } from 'lucide-react';
 import { OrderPreviewData } from '../mocks/orderPreview';
-import QRCodeView from './QRCodeView';
+import { QRCodeView } from './QRCodeView';
 import MediaGallery from './MediaGallery';
 import LocationMap from './LocationMap';
 
